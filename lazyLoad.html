@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .box {
+      height: 100vh;
+      background-color: blue;
+    }
+
+    img {
+      min-height: 100px;
+      min-width: 100px;
+      max-width: 100%;
+      background-color: #8f2727;
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box"></div>
+  <img data-src="https://www.mayihr.com/_nuxt/img/home-banner.8f98d6f.jpg">
+  <img data-src="https://www.mayihr.com/_nuxt/img/case-banner.098c587.jpg">
+  <img data-src="https://www.mayihr.com/_nuxt/img/server-banner.1f07b8b.jpg">
+  <img data-src="https://www.mayihr.com/_nuxt/img/about_bg.fe3547f.jpg">
+
+</body>
+<script>
+  let viewHeight = document.documentElement.clientHeight  // 可视区域的高
+  function lazyLoad() {
+    let ele = document.querySelectorAll('img[data-src]')
+    Array.prototype.forEach.call(ele, function (item, index) {
+      if (item.dataset.src == '') return
+      let rect = item.getBoundingClientRect()
+      if (rect.bottom > 0 && rect.top < viewHeight) {
+        let img = new Image()
+        img.src = item.dataset.src
+        img.onload = function () {
+          item.src = img.src
+        }
+        item.removeAttribute('data-src')
+      }
+    })
+  }
+  window.addEventListener('scroll', lazyLoad)
+</script>
+
+</html>
